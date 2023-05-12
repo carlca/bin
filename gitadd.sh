@@ -1,10 +1,10 @@
-    #!/bin/zsh
+#!/bin/zsh
 
-    # update/add files recursively
-    git add -A .
+# update/add files recursively
+git add -A .
 
-    # commit with user supplied message
-    git commit -m "$1"
+# commit with user supplied message
+git commit -m "$1"
 
-    # the final push!
-    git push
+# the final push!
+git push

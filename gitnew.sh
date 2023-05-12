@@ -1,35 +1,35 @@
-    #!/bin/zsh
+#!/bin/zsh
 
-    # get the CWD and put it in $folder  
-    folder=${PWD##*/}
-    
-    # I'm sure there are more concise ways of doing this...
-    if [ ! -e README.md ]; then
-        touch README.md
-        chmod 755 README.md
-    fi
-    echo "# $folder" >> README.md
-    
-    # delete previous .gitignore, if any. This deals with cp not supressing override prompts!
-    rm -rf .gitignore
+# get the CWD and put it in $folder
+folder=${PWD##*/}
 
-    # copy default .gitignore file from ~
-    cp ~/.gitignore .
+# I'm sure there are more concise ways of doing this...
+if [ ! -e README.md ]; then
+    touch README.md
+    chmod 755 README.md
+fi
+echo "# $folder" >> README.md
 
-    # this command has been tweaked to make it entirely portable
-    gitname=`git config user.name`
+# delete previous .gitignore, if any. This deals with cp not supressing override prompts!
+rm -rf .gitignore
 
-    # instructions as per https://github.com/new
-    git init
+# copy default .gitignore file from ~
+cp ~/.gitignore .
 
-    # note neat trick to supress message if remote rm fails
-    (git remote rm origin) 2>/dev/null
+# this command has been tweaked to make it entirely portable
+gitname=`git config user.name`
 
-    git remote add origin https://github.com/$gitname/$folder.git
+# instructions as per https://github.com/new
+git init
 
-    git branch -M main
-    git add README.md
-    git commit -m "first commit"
+# note neat trick to supress message if remote rm fails
+(git remote rm origin) 2>/dev/null
 
-    # the final push!
-    git push -u origin main
+git remote add origin https://github.com/$gitname/$folder.git
+
+git branch -M main
+git add README.md
+git commit -m "first commit"
+
+# the final push!
+git push -u origin main
