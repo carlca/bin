@@ -1,5 +1,8 @@
 #!/bin/zsh
 
+# Zap existing _ shell files
+rm -f _*.sh 2>/dev/null
+
 # Check if the directory is specified as an argument
 if [ -z "$1" ]; then
     # Set default directory to the current directory
@@ -24,14 +27,16 @@ if [ ${#java_files[@]} -eq 0 ]; then
     exit 1
 fi
 
-# Generate the zsh script to run the Java file
+# Generate the zsh script to compile and run the Java file
 for java_file in "${java_files[@]}"; do
-    base_name=$(basename "$java_file" .java)
-    script_name="${base_name}.sh"
-    cat > "_$script_name" << EOF
+    package_path=$(dirname "$java_file" | sed 's#^\./src/main/java/##')
+    class_name=$(basename "$java_file" .java)
+    script_name="_${class_name}.sh"
+    cat > "$script_name" << EOF
 #!/bin/zsh
-cd $(dirname "$java_file")
-java $(basename "$java_file")
+cd ./src/main/java
+javac ${package_path}/${class_name}.java
+java ${package_path}/${class_name}
 EOF
-    chmod +x "_$script_name"
-done 
+    chmod +x "$script_name"
+done

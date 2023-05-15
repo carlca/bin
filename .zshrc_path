@@ -1,0 +1,4 @@
+export PATH=$PATH:~/bin
+export PATH=$PATH:~/go/bin
+export PATH=$PATH:~/apache-maven/bin
+export PATH=$PATH:/usr/local/share/dotnet/x64/dotnet
