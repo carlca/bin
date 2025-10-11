@@ -17,7 +17,7 @@ rm -rf .gitignore
 cp ~/.gitignore .
 
 # this command has been tweaked to make it entirely portable
-gitname=`git config user.name`
+gitname=`git config github.username`
 
 # instructions as per https://github.com/new
 git init

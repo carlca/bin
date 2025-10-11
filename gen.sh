@@ -18,24 +18,22 @@ if [ ! -d "$dir" ]; then
     exit 1
 fi
 
-# Find the Java files in the directory and its subdirectories
-java_files=($(find "$dir" -name "*.java"))
+# Find the class files in the directory and its subdirectories
+class_files=($(find "$dir" -name "*.class"))
 
-# Check if any Java files were found
-if [ ${#java_files[@]} -eq 0 ]; then
-    echo "No Java files found in the directory and its subdirectories."
+# Check if any class files were found
+if [ ${#class_files[@]} -eq 0 ]; then
+    echo "No class files found in the directory and its subdirectories."
     exit 1
 fi
 
 # Generate the zsh script to compile and run the Java file
-for java_file in "${java_files[@]}"; do
-    package_path=$(dirname "$java_file" | sed 's#^\./src/main/java/##')
-    class_name=$(basename "$java_file" .java)
-    script_name="_${class_name}.sh"
+for class_file in "${class_files[@]}"; do
+    package_path=$(dirname "$class_file" | sed 's#^\./src/main/scala/##')
+    script_name="_${class_file}.sh"
     cat > "$script_name" << EOF
 #!/bin/zsh
-cd ./src/main/java
-javac ${package_path}/${class_name}.java
+cd ./src/main/scala
 java ${package_path}/${class_name}
 EOF
     chmod +x "$script_name"
