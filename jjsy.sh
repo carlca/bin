@@ -13,6 +13,8 @@ if [[ -z $(jj log -r @ --no-graph -T description 2>/dev/null) ]]; then
     jj describe -m "Auto-sync commit"
 fi
 
+desc=$(jj log -r @ --no-graph -T description 2>/dev/null)
+
 # Set bookmark
 jj bookmark set main 2>/dev/null || true
 
@@ -31,8 +33,11 @@ if ! jj git push --bookmark main 2>/dev/null; then
 fi
 
 # Sync with remote
-jj git fetch
-jj git import
-jj rebase -d main@git
+ign="Nothing changed"
+jj git fetch 2> >(grep "$ign" > /dev/null; grep -v "$ign" >&2)
+jj git import 2> >(grep "$ign" > /dev/null; grep -v "$ign" >&2)
+ign="Nothing changed|Skipped rebase of [0-9]\+ commits that were already in place"
+jj rebase -d main@git 2> >(grep "$ign" > /dev/null; grep -v "$ign" >&2)
 
-echo "Done!"
+# Get the last assigned description
+echo "Updated the Github repo with the commit message: $desc"
