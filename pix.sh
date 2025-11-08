@@ -4,4 +4,9 @@ rm -rf pixi.lock
 pixi self-update
 pixi clean cache --conda
 pixi update
-pixi run default
+if [ -f "./pix.sh" ]; then
+    exec ./pix.sh "$@"
+else
+    # default behavior
+    pixi run default
+fi
